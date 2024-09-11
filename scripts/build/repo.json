@@ -1,0 +1,107 @@
+[
+	{
+		"name": "axhal",
+		"url": "git@github.com:Starry-OS/axhal.git",
+		"localPath": "modules/axhal"
+	},
+	{
+		"name": "axtask",
+		"url": "git@github.com:Starry-OS/axtask.git",
+		"localPath": "modules/axtask"
+	},
+	{
+		"name": "axtrap",
+		"url": "git@github.com:Starry-OS/axtrap.git",
+		"localPath": "modules/axtrap"
+	},
+	{
+		"name": "axmem",
+		"url": "git@github.com:Starry-OS/axmem.git",
+		"localPath": "modules/axmem"
+	},
+	{
+		"name": "axnet",
+		"url": "git@github.com:Starry-OS/axnet.git",
+		"localPath": "modules/axnet"
+	},
+	{
+		"name": "axdisplay",
+		"url": "git@github.com:Starry-OS/axdisplay.git",
+		"localPath": "modules/axdisplay"
+	},
+	{
+		"name": "axsync",
+		"url": "git@github.com:Starry-OS/axsync.git",
+		"localPath": "modules/axsync"
+	},
+	{
+		"name": "axsignal",
+		"url": "git@github.com:Starry-OS/axsignal.git",
+		"localPath": "modules/axsignal"
+	},
+	{
+		"name": "axfutex",
+		"url": "git@github.com:Starry-OS/axfutex.git",
+		"localPath": "modules/axfutex"
+	},
+	{
+		"name": "axfs",
+		"url": "git@github.com:Starry-OS/axfs.git",
+		"localPath": "modules/axfs"
+	},
+	{
+		"name": "axruntime",
+		"url": "git@github.com:Starry-OS/axruntime.git",
+		"localPath": "modules/axruntime"
+	},
+	{
+		"name": "arch_boot",
+		"url": "git@github.com:Starry-OS/arch_boot.git",
+		"localPath": "modules/arch_boot"
+	},
+	{
+		"name": "axprocess",
+		"url": "git@github.com:Starry-OS/axprocess.git",
+		"localPath": "modules/axprocess"
+	},
+	{
+		"name": "axalloc",
+		"url": "git@github.com:Starry-OS/axalloc.git",
+		"localPath": "modules/axalloc"
+	},
+	{
+		"name": "axdriver",
+		"url": "git@github.com:Starry-OS/axdriver.git",
+		"localPath": "modules/axdriver"
+	},
+	{
+		"name": "arceos_api",
+		"url": "git@github.com:Starry-OS/arceos_api.git",
+		"localPath": "api/arceos_api"
+	},
+	{
+		"name": "arceos_posix_api",
+		"url": "git@github.com:Starry-OS/arceos_posix_api.git",
+		"localPath": "api/arceos_posix_api"
+	},
+	{
+		"name": "linux_syscall_api",
+		"url": "git@github.com:Starry-OS/linux_syscall_api.git",
+		"localPath": "api/linux_syscall_api"
+	},
+	{
+		"name": "axfeat",
+		"url": "git@github.com:Starry-OS/axfeat.git",
+		"localPath": "api/axfeat"
+	},
+	{
+		"name": "axstarry",
+		"url": "git@github.com:Starry-OS/axstarry.git",
+		"localPath": "ulib/axstarry"
+	},
+	{
+		"name": "axstd",
+		"url": "git@github.com:Starry-OS/axstd.git",
+		"localPath": "ulib/axstd"
+	}
+]
