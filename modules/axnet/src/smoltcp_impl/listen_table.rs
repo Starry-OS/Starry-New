@@ -92,7 +92,7 @@ impl ListenTable {
             let idx = syn_queue
                 .iter()
                 .enumerate()
-                .find_map(|(idx, &handle)| is_connected(handle).then(|| idx))
+                .find_map(|(idx, &handle)| is_connected(handle).then_some(idx))
                 .ok_or(AxError::WouldBlock)?; // wait for connection
             if idx > 0 {
                 warn!(

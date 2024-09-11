@@ -538,7 +538,7 @@ pub fn syscall_setsid() -> SyscallResult {
         process.get_parent(),
         Mutex::new(process.memory_set.lock().clone()),
         process.get_heap_bottom(),
-        Arc::new(Mutex::new(String::from("/").into())),
+        Arc::new(Mutex::new(String::from("/"))),
         Arc::new(AtomicI32::new(0o022)),
         Arc::new(Mutex::new(process.fd_manager.fd_table.lock().clone())),
     );
@@ -662,7 +662,7 @@ pub fn syscall_prctl(args: [usize; 6]) -> SyscallResult {
 
 /// Sendthe signal sig to the target process referred to by pidfd
 pub fn syscall_pidfd_send_signal(args: [usize; 6]) -> SyscallResult {
-    let fd = args[0] as usize;
+    let fd = args[0];
     let signum = args[1] as i32;
     axlog::warn!("Ignore the info arguments");
 

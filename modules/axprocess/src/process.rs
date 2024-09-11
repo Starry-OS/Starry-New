@@ -1,8 +1,8 @@
 //! 规定进程控制块内容
 extern crate alloc;
+use alloc::format;
 use alloc::string::ToString;
 use alloc::sync::Arc;
-use alloc::format;
 use alloc::vec;
 use alloc::vec::Vec;
 use alloc::{collections::BTreeMap, string::String};
@@ -164,6 +164,7 @@ impl Process {
         *self.blocked_by_vfork.lock() = value;
     }
 
+    /// Whether the process is blocked by vfork
     pub fn get_vfork_block(&self) -> bool {
         *self.blocked_by_vfork.lock()
     }
@@ -277,7 +278,7 @@ impl Process {
             KERNEL_PROCESS_ID,
             Mutex::new(Arc::new(Mutex::new(memory_set))),
             heap_bottom.as_usize() as u64,
-            Arc::new(Mutex::new(String::from("/").into())),
+            Arc::new(Mutex::new(String::from("/"))),
             Arc::new(AtomicI32::new(0o022)),
             new_fd_table,
         ));
@@ -646,8 +647,8 @@ impl Process {
 
             let mut signal_module = SignalModule::init_signal(Some(new_handler));
             // exit signal, default to be SIGCHLD
-            if exit_signal.is_some() {
-                signal_module.set_exit_signal(exit_signal.unwrap());
+            if let Some(exit_signal) = exit_signal {
+                signal_module.set_exit_signal(exit_signal);
             }
             self.signal_modules
                 .lock()
@@ -658,7 +659,7 @@ impl Process {
                 .insert(new_task.id().as_u64(), FutexRobustList::default());
             return_id = new_task.id().as_u64();
         } else {
-            let mut cwd_src = Arc::new(Mutex::new(String::from("/").into()));
+            let mut cwd_src = Arc::new(Mutex::new(String::from("/")));
             let mut mask_src = Arc::new(AtomicI32::new(0o022));
             if clone_flags.contains(CloneFlags::CLONE_FS) {
                 cwd_src = Arc::clone(&self.fd_manager.cwd);
@@ -689,8 +690,8 @@ impl Process {
             // 若是新建了进程，那么需要把进程的父子关系进行记录
             let mut signal_module = SignalModule::init_signal(Some(new_handler));
             // exit signal, default to be SIGCHLD
-            if exit_signal.is_some() {
-                signal_module.set_exit_signal(exit_signal.unwrap());
+            if let Some(exit_signal) = exit_signal {
+                signal_module.set_exit_signal(exit_signal);
             }
             new_process
                 .signal_modules
@@ -804,7 +805,7 @@ impl Process {
 
     /// Set the current working directory of the process
     pub fn set_cwd(&self, cwd: String) {
-        *self.fd_manager.cwd.lock() = cwd.into();
+        *self.fd_manager.cwd.lock() = cwd;
     }
 }
 

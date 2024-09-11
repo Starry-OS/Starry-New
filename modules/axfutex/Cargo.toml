@@ -14,12 +14,14 @@ monolithic = ["fs" ,"axfs/monolithic", "axhal/monolithic", "axtask/monolithic"]
 default = ["monolithic"]
 
 [dependencies]
-axfs = { git = "https://github.com/Starry-OS/axfs.git", optional = true }
-axhal = { git = "https://github.com/Starry-OS/axhal.git" }
-log = "0.4"
+axfs = { path = "../axfs", optional = true }
+axhal = { path = "../axhal" }
+log = "0.4.21"
 axlog = { git = "https://github.com/Starry-OS/axlog.git" }
-axtask = { git = "https://github.com/Starry-OS/axtask.git" }
+axtask = { path = "../axtask" }
 axerrno = { git = "https://github.com/Starry-OS/axerrno.git" }
-axsync = {git = "https://github.com/Starry-OS/axsync.git"}
+axsync = { path = "../axsync" }
 hashbrown = "0.11"
 lazy_static = "1.5.0"
+bitflags = "2.6"
+numeric-enum-macro = { git = "https://github.com/mexus/numeric-enum-macro" }

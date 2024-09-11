@@ -186,7 +186,7 @@ pub fn vfork_suspend(task: &AxTaskRef) {
         wait_queue.wait_until(|| {
             // If the given task does the exec syscall, it will be the leader of the new process.
             task.is_leader() || task.state() == TaskState::Exited
-        });
+        })
     });
 }
 
@@ -213,17 +213,24 @@ pub fn run_idle() -> ! {
     }
 }
 
+/// Dump the current task backtrace.
 pub fn dump_curr_backtrace() {
     dump_task_backtrace(current().as_task_ref().clone());
 }
+
+#[allow(missing_docs)]
 pub fn dump_task_backtrace(task: AxTaskRef) {
-    use axbacktrace::{dump_backtrace, Unwind, UnwindIf, StackInfo};
+    use axbacktrace::{dump_backtrace, StackInfo, Unwind, UnwindIf};
 
     let stack_low = task.get_kernel_stack_down().unwrap();
     let stack_high = task.get_kernel_stack_top().unwrap();
-    info!("dump task: {}, stack range: {:#016x}: {:#016x}", 
-        task.id_name(), stack_low, stack_high);
-    let stack_info = StackInfo::new(stack_low,stack_high);
+    info!(
+        "dump task: {}, stack range: {:#016x}: {:#016x}",
+        task.id_name(),
+        stack_low,
+        stack_high
+    );
+    let stack_info = StackInfo::new(stack_low, stack_high);
 
     //Init Unwind instance from current context
     let curr = crate::current();
@@ -231,7 +238,7 @@ pub fn dump_task_backtrace(task: AxTaskRef) {
         Unwind::new_from_cur_ctx(stack_info)
     } else {
         let (pc, fp) = task.ctx_unwind();
-        Unwind::new(pc,fp,stack_info)
+        Unwind::new(pc, fp, stack_info)
     };
     // dump current task trace
     dump_backtrace(&mut unwind);

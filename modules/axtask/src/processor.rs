@@ -19,6 +19,7 @@ static PROCESSORS: SpinNoIrqOnly<VecDeque<&'static Processor>> =
 #[percpu::def_percpu]
 static PROCESSOR: LazyInit<Processor> = LazyInit::new();
 
+/// Processor on coresponding core
 pub struct Processor {
     /// Processor SCHEDULER
     scheduler: SpinNoIrq<Scheduler>,
@@ -40,6 +41,7 @@ unsafe impl Sync for Processor {}
 unsafe impl Send for Processor {}
 
 impl Processor {
+    /// Create a new processor
     pub fn new(idle_task: AxTaskRef) -> Self {
         let gc_task = new_task(
             gc_entry,
@@ -58,10 +60,11 @@ impl Processor {
             exited_tasks: SpinNoIrq::new(VecDeque::new()),
             gc_wait: WaitQueue::new(),
             task_nr: AtomicUsize::new(0),
-            gc_task: gc_task,
+            gc_task,
         }
     }
 
+    /// The idle task of the processor
     pub fn idle_task(&self) -> &AxTaskRef {
         &self.idle_task
     }
@@ -118,6 +121,7 @@ impl Processor {
         task.get_processor().scheduler.lock().add_task(task);
     }
 
+    #[cfg(feature = "irq")]
     #[inline]
     /// Processor Clean
     pub(crate) fn task_tick(&self, task: &AxTaskRef) -> bool {
@@ -185,7 +189,7 @@ impl Processor {
     #[inline]
     /// gc init
     pub(crate) fn gc_init(&'static self) {
-        self.gc_task.init_processor(&self);
+        self.gc_task.init_processor(self);
         self.scheduler.lock().add_task(self.gc_task.clone());
     }
 
@@ -200,6 +204,10 @@ impl Processor {
     }
 }
 
+/// Get current processor pointer
+///
+/// # Safety
+/// The processor pointer is a per-core global variable, so it is safe to access it.
 pub fn current_processor() -> &'static Processor {
     unsafe { PROCESSOR.current_ref_raw() }
 }

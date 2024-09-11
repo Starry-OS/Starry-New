@@ -32,18 +32,18 @@ net = ["ip", "axnet/monolithic"]
 [dependencies]
 cfg-if = "1.0"
 axlog = { git = "https://github.com/Starry-OS/axlog.git" }
-axfs = { git = "https://github.com/Starry-OS/axfs.git" }
-axruntime = { git = "https://github.com/Starry-OS/axruntime.git" }
-axhal = { git = "https://github.com/Starry-OS/axhal.git" }
-axtask = { git = "https://github.com/Starry-OS/axtask.git" }
-axnet = { git = "https://github.com/Starry-OS/axnet.git" }
-axprocess = { git = "https://github.com/Starry-OS/axprocess.git" }
-axsignal = { git = "https://github.com/Starry-OS/axsignal.git" }
-axconfig = { git = "https://github.com/Starry-OS/axconfig.git" }
-axsync = { git = "https://github.com/Starry-OS/axsync.git" }
-axmem = { git = "https://github.com/Starry-OS/axmem.git" }
-axfeat = { git = "https://github.com/Starry-OS/axfeat.git" }
-axfutex = { git = "https://github.com/Starry-OS/axfutex.git"}
+axfs = { path = "../../modules/axfs" }
+axruntime = { path = "../../modules/axruntime" }
+axhal = { path = "../../modules/axhal" }
+axtask = { path = "../../modules/axtask" }
+axnet = { path = "../../modules/axnet" }
+axprocess = { path = "../../modules/axprocess" }
+axsignal = { path = "../../modules/axsignal" }
+axconfig = { path = "../../modules/axconfig" }
+axsync = { path = "../../modules/axsync" }
+axmem = { path = "../../modules/axmem" }
+axfeat = { path = "../axfeat" }
+axfutex = { path = "../../modules/axfutex" }
 
 lazy_init = { git = "https://github.com/Starry-OS/lazy_init.git" }
 spinlock = { git = "https://github.com/Starry-OS/spinlock.git" }

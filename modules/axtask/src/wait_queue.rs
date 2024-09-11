@@ -1,11 +1,11 @@
+use crate::schedule::schedule;
 #[cfg(feature = "irq")]
 use crate::schedule::schedule_timeout;
-use crate::schedule::schedule;
-use spinlock::SpinNoIrq;
 use crate::wait_list::WaitTaskList;
 use crate::wait_list::WaitTaskNode;
 use crate::AxTaskRef;
 use alloc::sync::Arc;
+use spinlock::SpinNoIrq;
 /// A queue to store sleeping tasks.
 ///
 /// # Examples
@@ -32,11 +32,12 @@ use alloc::sync::Arc;
 
 #[macro_export]
 macro_rules! declare_wait {
-     ($name: ident) => {
-         let $name = Arc::new(WaitTaskNode::new($crate::current().as_task_ref().clone()));
-     };
+    ($name: ident) => {
+        let $name = Arc::new(WaitTaskNode::new($crate::current().as_task_ref().clone()));
+    };
 }
 
+/// A queue to store tasks that are waiting for some conditions.
 pub struct WaitQueue {
     // Support queue lock by external caller,use SpinNoIrq
     // Arceos SpinNoirq current implementation implies irq_save,

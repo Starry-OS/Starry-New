@@ -21,13 +21,13 @@ monolithic = ["paging", "dep:axfs_ramfs"]
 default = []
 
 [dependencies]
-log = "0.4"
+log = "0.4.21"
 cfg-if = "1.0"
 bitflags = "2.6"
 static_assertions = "1.1.0"
 axlog = { git = "https://github.com/Starry-OS/axlog.git" }
-axconfig = { git = "https://github.com/Starry-OS/axconfig.git" }
-axalloc = { git = "https://github.com/Starry-OS/axalloc.git", optional = true }
+axconfig = { path = "../axconfig" }
+axalloc = { path = "../axalloc", optional = true }
 kernel_guard = { git = "https://github.com/Starry-OS/kernel_guard.git" }
 spinlock = { git = "https://github.com/Starry-OS/spinlock.git" }
 ratio = { git = "https://github.com/Starry-OS/ratio.git" }
@@ -61,4 +61,4 @@ arm_pl011 = { git = "https://github.com/Starry-OS/arm_pl011.git" }
 dw_apb_uart = { git = "https://github.com/Starry-OS/dw_apb_uart.git" }
 
 [build-dependencies]
-axconfig = { git = "https://github.com/Starry-OS/axconfig.git" }
+axconfig = { path = "../axconfig" }

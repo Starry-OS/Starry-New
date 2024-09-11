@@ -86,7 +86,6 @@ cfg_if::cfg_if! {
 cfg_if::cfg_if! {
     if #[cfg(net_dev = "ixgbe")] {
         use crate::ixgbe::IxgbeHalImpl;
-        use axhal::mem::phys_to_virt;
         pub struct IxgbeDriver;
         register_net_driver!(IxgbeDriver, driver_net::ixgbe::IxgbeNic<IxgbeHalImpl, 1024, 1>);
         impl DriverProbe for IxgbeDriver {
@@ -113,7 +112,7 @@ cfg_if::cfg_if! {
                                 ..
                             } => {
                                 let ixgbe_nic = IxgbeNic::<IxgbeHalImpl, QS, QN>::init(
-                                    phys_to_virt((address as usize).into()).into(),
+                                    axhal::mem::phys_to_virt((address as usize).into()).into(),
                                     size as usize
                                 )
                                 .expect("failed to initialize ixgbe device");
@@ -134,7 +133,7 @@ cfg_if::cfg_if! {
 cfg_if::cfg_if! {
     if #[cfg(net_dev = "e1000")] {
         use axalloc::global_allocator;
-        use axhal::mem::{phys_to_virt, virt_to_phys};
+        use axhal::mem::virt_to_phys;
         use driver_net::e1000::{E1000Nic, KernelFunc};
         use core::alloc::Layout;
 
@@ -166,6 +165,7 @@ cfg_if::cfg_if! {
 
 
         impl DriverProbe for E1000Driver {
+            #[cfg(bus = "pci")]
             fn probe_pci(
                     root: &mut driver_pci::PciRoot,
                     bdf: driver_pci::DeviceFunction,
@@ -186,7 +186,7 @@ cfg_if::cfg_if! {
                                 let kfn = KernelFuncObj;
                                 let nic = E1000Nic::<KernelFuncObj>::init(
                                     kfn,
-                                    phys_to_virt((address as usize).into()).into()
+                                    axhal::mem::phys_to_virt((address as usize).into()).into()
                                 )
                                 .expect("failed to initialize e1000 device");
                                 return Some(AxDeviceEnum::from_net(nic));

@@ -15,15 +15,14 @@
 #![feature(doc_cfg)]
 cfg_if::cfg_if! {
     if #[cfg(feature = "multitask")] {
-        #[macro_use]
         extern crate axtask;
         extern crate alloc;
-           
+
         mod mutex;
         mod completion;
-            
+
         pub use self::completion::Completion;
-            
+
         #[doc(cfg(feature = "multitask"))]
         pub use self::mutex::{Mutex, MutexGuard};
     } else {
@@ -33,4 +32,3 @@ cfg_if::cfg_if! {
 }
 
 pub use spinlock as spin;
-

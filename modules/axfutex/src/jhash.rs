@@ -1,7 +1,7 @@
 const JHASH_INITVAL: u32 = 0xdeadbeef;
 
 #[inline(always)]
-pub fn jhash_mix(a: &mut u32, b: &mut u32, c: &mut u32) {
+pub(crate) fn jhash_mix(a: &mut u32, b: &mut u32, c: &mut u32) {
     *a = a.wrapping_sub(*c);
     *a ^= c.rotate_left(4);
     *c = c.wrapping_add(*b);
@@ -27,7 +27,7 @@ pub fn jhash_mix(a: &mut u32, b: &mut u32, c: &mut u32) {
     *b = b.wrapping_add(*a);
 }
 
-pub fn jhash_final(mut a: u32, mut b: u32, mut c: u32) -> u32 {
+pub(crate) fn jhash_final(mut a: u32, mut b: u32, mut c: u32) -> u32 {
     c ^= b;
     c = c.wrapping_sub(b.rotate_left(14));
 
@@ -51,9 +51,7 @@ pub fn jhash_final(mut a: u32, mut b: u32, mut c: u32) -> u32 {
     c
 }
 
-
-
-pub fn jhash2(mut key: &[u32], initval: u32) -> u32 {
+pub(crate) fn jhash2(mut key: &[u32], initval: u32) -> u32 {
     let mut a = JHASH_INITVAL
         .wrapping_add(key.len() as u32)
         .wrapping_add(initval);

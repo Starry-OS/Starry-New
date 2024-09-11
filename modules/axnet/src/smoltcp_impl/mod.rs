@@ -148,11 +148,9 @@ impl<'a> SocketSetWrapper<'a> {
     }
 
     pub fn poll_interfaces(&self) {
-        let timestamp =
-            Instant::from_micros_const((current_time_nanos() / NANOS_PER_MICROS) as i64);
         #[cfg(feature = "monolithic")]
         LOOPBACK.lock().poll(
-            timestamp,
+            Instant::from_micros_const((current_time_nanos() / NANOS_PER_MICROS) as i64),
             LOOPBACK_DEV.lock().deref_mut(),
             &mut self.0.lock(),
         );

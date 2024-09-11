@@ -53,7 +53,7 @@ impl FileIO for PidFd {
     }
 
     fn get_status(&self) -> OpenFlags {
-        self.flags.lock().clone()
+        *self.flags.lock()
     }
 
     fn set_status(&self, flags: OpenFlags) -> bool {

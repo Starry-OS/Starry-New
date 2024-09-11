@@ -1,8 +1,8 @@
-use alloc::collections::VecDeque;
+use crate::futex::{FutexKey, FutexQ};
 use alloc::boxed::Box;
+use alloc::collections::VecDeque;
 use alloc::vec::Vec;
 use axlog::info;
-use crate::futex::{FutexKey, FutexQ};
 
 use crate::jhash::jhash2;
 use axsync::Mutex;
@@ -12,12 +12,12 @@ use lazy_static::lazy_static;
 const FUTEX_HASH_SIZE: usize = 256;
 
 lazy_static! {
-    // can only hold the mutex through `futex_hash_bucket`
-   pub static ref FUTEXQUEUES: FutexQueues = {
+    /// A global futex queues, which stores all futex queues
+    /// It only holds the mutex through `futex_hash_bucket`
+    pub static ref FUTEXQUEUES: FutexQueues = {
         info!("Initializing futex queues");
-        let futex_queues = FutexQueues::new(FUTEX_HASH_SIZE);
-        futex_queues
-   };
+        FutexQueues::new(FUTEX_HASH_SIZE)
+    };
 }
 
 #[allow(unused)]
@@ -28,7 +28,11 @@ pub fn display_futexqueues() {
         let hash_bucket = FUTEXQUEUES.buckets[i].lock();
         if !hash_bucket.is_empty() {
             for futex_q in hash_bucket.iter() {
-                axlog::warn!("task {} is still wait for {:?}", futex_q.task.id().as_u64(), futex_q.key); 
+                axlog::warn!(
+                    "task {} is still wait for {:?}",
+                    futex_q.task.id().as_u64(),
+                    futex_q.key
+                );
             }
         }
         drop(hash_bucket);
@@ -48,15 +52,13 @@ impl FutexQueues {
         }
         Self {
             buckets: buckets.into_boxed_slice(),
-        }         
+        }
     }
 }
 
-pub fn futex_hash(futex_key: &FutexKey) -> usize{
+/// Hash a [`FutexKey`] to a bucket index
+pub fn futex_hash(futex_key: &FutexKey) -> usize {
     let key = &[futex_key.pid, futex_key.aligned, futex_key.offset];
     let hash = jhash2(key, key[2]);
-    let index = hash as usize & (FUTEX_HASH_SIZE - 1);
-    index
+    hash as usize & (FUTEX_HASH_SIZE - 1)
 }
-
-

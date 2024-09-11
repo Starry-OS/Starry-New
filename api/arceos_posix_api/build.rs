@@ -80,7 +80,7 @@ typedef struct {{
             }
         }
         let libc_dir = option_env!("AX_LIBC_DIR").unwrap_or(".");
-        println!("{}", format!("-I{}/include", libc_dir));
+        println!("-I{}/include", libc_dir);
         let mut builder = bindgen::Builder::default()
             .header(in_file)
             .clang_arg(format!("-I{}/include", libc_dir))

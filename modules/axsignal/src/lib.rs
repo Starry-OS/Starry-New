@@ -50,7 +50,7 @@ impl SignalHandler {
     }
 
     /// To get the action of a signal with the signal number
-    pub fn get_action<'a>(&'a self, sig_num: usize) -> &'a SigAction {
+    pub fn get_action(&self, sig_num: usize) -> &SigAction {
         &self.handlers[sig_num - 1]
     }
     /// 设置信号处理函数

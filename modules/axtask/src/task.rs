@@ -15,8 +15,8 @@ use crate::{
 
 pub use taskctx::{TaskId, TaskInner};
 
+use core::sync::atomic::AtomicBool;
 use spinlock::{SpinNoIrq, SpinNoIrqOnly, SpinNoIrqOnlyGuard};
-use core::sync::atomic::{AtomicBool, Ordering};
 
 extern "C" {
     fn _stdata();
@@ -43,6 +43,7 @@ pub enum TaskState {
 pub struct ScheduleTask {
     inner: TaskInner,
     /// Store task irq state
+    #[allow(unused)]
     irq_state: AtomicBool,
     /// Task state
     state: SpinNoIrqOnly<TaskState>,
@@ -56,7 +57,7 @@ impl ScheduleTask {
             state: SpinNoIrqOnly::new(TaskState::Runable),
             processor: SpinNoIrq::new(None),
             irq_state: AtomicBool::new(irq_init_state),
-            inner: inner,
+            inner,
         }
     }
 
@@ -121,14 +122,15 @@ impl ScheduleTask {
     #[cfg(feature = "irq")]
     #[inline]
     pub(crate) fn set_irq_state(&self, irq_state: bool) {
-        self.irq_state.store(irq_state,Ordering::Relaxed);
+        self.irq_state
+            .store(irq_state, core::sync::atomic::Ordering::Relaxed);
     }
 
     /// get irq state
     #[cfg(feature = "irq")]
     #[inline]
     pub(crate) fn get_irq_state(&self) -> bool {
-        self.irq_state.load(Ordering::Relaxed)
+        self.irq_state.load(core::sync::atomic::Ordering::Relaxed)
     }
 }
 
@@ -191,7 +193,7 @@ where
     task.reset_time_stat(current_time_nanos() as usize);
 
     // a new task start, irq should be enabled by default
-    let axtask = Arc::new(AxTask::new(ScheduleTask::new(task,true)));
+    let axtask = Arc::new(AxTask::new(ScheduleTask::new(task, true)));
     add_wait_for_exit_queue(&axtask);
     axtask
 }
@@ -231,7 +233,7 @@ where
 }
 
 pub(crate) fn new_init_task(name: String) -> AxTaskRef {
-    // init task irq should be disabled by default 
+    // init task irq should be disabled by default
     // it would be reinit when switch happend
     let axtask = Arc::new(AxTask::new(ScheduleTask::new(
         taskctx::TaskInner::new_init(
@@ -305,7 +307,7 @@ impl Deref for CurrentTask {
 extern "C" fn task_entry() -> ! {
     // SAFETY: INIT when switch_to
     // First into task entry, manually perform the subsequent work of switch_to
-    
+
     current_processor().switch_post();
 
     let task = crate::current();

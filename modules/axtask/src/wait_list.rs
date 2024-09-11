@@ -1,8 +1,8 @@
+use crate::schedule::wakeup_task;
+use crate::task::TaskState;
+use crate::AxTaskRef;
 use alloc::sync::Arc;
 use core::ops::Deref;
-use crate::AxTaskRef;
-use crate::task::TaskState;
-use crate::schedule::wakeup_task;
 
 use linked_list::{GetLinks, Links, List};
 
@@ -24,7 +24,7 @@ impl GetLinks for WaitTaskNode {
 }
 
 impl WaitTaskNode {
-    /// Creates a new [`FifoTask`] from the inner task struct.
+    /// Creates a new FifoTask from the inner task struct.
     pub const fn new(inner: AxTaskRef) -> Self {
         Self {
             inner,
@@ -48,18 +48,16 @@ impl Deref for WaitTaskNode {
 
 /// A simple FIFO wait task list
 ///
-/// When a task is added to the list, it's placed at the end of the waitlist. 
+/// When a task is added to the list, it's placed at the end of the waitlist.
 /// When picking the next task to run, the head of the wait list is taken.
 pub struct WaitTaskList {
     list: List<Arc<WaitTaskNode>>,
 }
 
 impl WaitTaskList {
-    /// Creates a new empty [WaitList].
+    /// Creates a new empty WaitList.
     pub const fn new() -> Self {
-        Self {
-            list: List::new(),
-        }
+        Self { list: List::new() }
     }
 
     /// add wait to list back
@@ -75,7 +73,7 @@ impl WaitTaskList {
     /// Callers must ensure that `data` is either on this list or in no list. It being on another
     /// list leads to memory unsafety.
     pub fn remove(&mut self, node: &Arc<WaitTaskNode>) -> Option<Arc<WaitTaskNode>> {
-        unsafe { self.list.remove(node)}
+        unsafe { self.list.remove(node) }
     }
 
     /// notify special task and remove it
@@ -96,7 +94,7 @@ impl WaitTaskList {
         if wake {
             cursor.remove_current();
         }
-        
+
         false
     }
 
@@ -118,4 +116,3 @@ impl WaitTaskList {
         }
     }
 }
-

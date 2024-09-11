@@ -10,6 +10,7 @@ use alloc::{
 };
 use axconfig::{MAX_USER_HEAP_SIZE, MAX_USER_STACK_SIZE, USER_HEAP_BASE, USER_STACK_TOP};
 use axerrno::{AxError, AxResult};
+use axfutex::flags::FutexFlags;
 use axhal::mem::VirtAddr;
 use axhal::paging::MappingFlags;
 use axhal::time::{current_time_nanos, NANOS_PER_MICROS, NANOS_PER_SEC};
@@ -41,7 +42,7 @@ pub fn init_kernel_process() {
         0,
         Mutex::new(Arc::new(Mutex::new(MemorySet::new_empty()))),
         0,
-        Arc::new(Mutex::new(String::from("/").into())),
+        Arc::new(Mutex::new(String::from("/"))),
         Arc::new(AtomicI32::new(0o022)),
         Arc::new(Mutex::new(vec![])),
     ));
@@ -83,8 +84,8 @@ pub fn exit_current_task(exit_code: i32) -> ! {
         let parent = process.get_parent();
         if parent != KERNEL_PROCESS_ID {
             // send exit signal
-            let signal = if exit_signal.is_some() {
-                exit_signal.unwrap()
+            let signal = if let Some(exit_signal) = exit_signal {
+                exit_signal
             } else {
                 SignalNo::SIGCHLD
             };
@@ -101,7 +102,7 @@ pub fn exit_current_task(exit_code: i32) -> ! {
         {
             unsafe {
                 *(clear_child_tid as *mut i32) = 0;
-                let _ = futex_wake(clear_child_tid.into(), 0, 1);
+                let _ = futex_wake(clear_child_tid.into(), FutexFlags::empty(), 1);
             }
         }
     }

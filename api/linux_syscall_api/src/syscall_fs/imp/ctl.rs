@@ -473,7 +473,7 @@ pub fn syscall_ioctl(args: [usize; 6]) -> SyscallResult {
                 let old_status = file.get_status();
                 let _ = file.set_status(old_status | OpenFlags::NON_BLOCK);
             }
-            return Ok(0);
+            Ok(0)
         }
         FIOCLEX => Ok(0),
         _ => Err(SyscallError::EOPNOTSUPP),

@@ -294,25 +294,6 @@ pub struct IoVec {
 #[allow(unused)]
 pub(crate) const FUTEX_BITSET_MATCH_ANY: u32 = 0xffffffff;
 
-bitflags::bitflags! {
-    /// 对 futex 的操作
-    #[derive(PartialEq, Eq)]
-    pub struct FutexFlags: i32 {
-        /// 检查用户地址 uaddr 处的值。如果不是要求的值则等待 wake
-        const WAIT = 0;
-        /// 唤醒最多 val 个在等待 uaddr 位置的线程。
-        const WAKE = 1;
-        /// 将等待 uaddr 的线程移动到 uaddr2
-        const REQUEUE = 3;
-        /// WAIT_BITSET
-        const WAIT_BITSET = 9;
-        /// WAKT_BITSET
-        const WAKE_BITSET = 10;
-        /// FUTEX_PRIVATE_FLAG
-        const FUTEX_PRIVATE_FLAG = 128;
-    }
-}
-
 numeric_enum_macro::numeric_enum! {
     #[repr(usize)]
     #[allow(non_camel_case_types)]

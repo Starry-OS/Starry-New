@@ -1,11 +1,7 @@
 //! 实现与futex相关的系统调用
 use crate::{current_process, current_task, signal::current_have_signals, yield_now_task};
 use axerrno::LinuxError;
-use axfutex::{
-    flags::FLAGS_SHARED,
-    futex::{FutexKey, FutexQ},
-    queues::{futex_hash, FUTEXQUEUES},
-};
+use axfutex::{flags::FutexFlags, futex_hash, FutexKey, FutexQ, FUTEXQUEUES};
 use axhal::mem::VirtAddr;
 use axlog::info;
 use core::time::Duration;
@@ -13,7 +9,7 @@ use core::time::Duration;
 
 extern crate alloc;
 
-pub type AxSyscallResult = Result<isize, axerrno::LinuxError>;
+type AxSyscallResult = Result<isize, axerrno::LinuxError>;
 
 /// waiting queue which stores tasks waiting for futex variable
 //pub static WAIT_FOR_FUTEX: WaitQueue = WaitQueue::new();
@@ -34,7 +30,7 @@ impl FutexRobustList {
     }
 }
 
-pub fn futex_get_value_locked(vaddr: VirtAddr) -> AxSyscallResult {
+fn futex_get_value_locked(vaddr: VirtAddr) -> AxSyscallResult {
     let process = current_process();
     if process.manual_alloc_for_lazy(vaddr).is_ok() {
         let real_futex_val = unsafe { (vaddr.as_usize() as *const u32).read_volatile() };
@@ -44,8 +40,8 @@ pub fn futex_get_value_locked(vaddr: VirtAddr) -> AxSyscallResult {
     }
 }
 
-pub fn get_futex_key(uaddr: VirtAddr, flags: i32) -> FutexKey {
-    if flags & FLAGS_SHARED != 0 {
+fn get_futex_key(uaddr: VirtAddr, flags: &FutexFlags) -> FutexKey {
+    if flags.contains(FutexFlags::SHARED) {
         /* Todo: after implement inode layer
         let inode = uaddr.get_inode();
         let page_index = uaddr.get_page_index();
@@ -56,18 +52,21 @@ pub fn get_futex_key(uaddr: VirtAddr, flags: i32) -> FutexKey {
         let pid = 0;
         let aligned = uaddr.align_down_4k().as_usize();
         let offset = uaddr.align_offset_4k() as u32;
-        return FutexKey::new(pid, aligned, offset);
+        FutexKey::new(pid, aligned, offset)
     } else {
         let pid = current_process().pid();
         let aligned = uaddr.align_down_4k().as_usize();
         let offset = uaddr.align_offset_4k() as u32;
-        return FutexKey::new(pid, aligned, offset);
+        FutexKey::new(pid, aligned, offset)
     }
 }
 
+/// Wait on a futex variable
+///
+/// Details: <https://manpages.debian.org/unstable/manpages-dev/futex.2.en.html#FUTEX_WAIT>
 pub fn futex_wait(
     vaddr: VirtAddr,
-    flags: i32,
+    flags: FutexFlags,
     expected_val: u32,
     deadline: Option<Duration>,
     bitset: u32,
@@ -84,7 +83,7 @@ pub fn futex_wait(
 
     // we may be victim of spurious wakeups, so we need to loop
     loop {
-        let key = get_futex_key(vaddr, flags);
+        let key = get_futex_key(vaddr, &flags);
         let real_futex_val = futex_get_value_locked(vaddr)?;
         if expected_val != real_futex_val as u32 {
             return Err(LinuxError::EAGAIN);
@@ -138,14 +137,18 @@ pub fn futex_wait(
     }
 }
 
-// no need to check the bitset, faster than futex_wake_bitset
-pub fn futex_wake(vaddr: VirtAddr, flags: i32, nr_waken: u32) -> AxSyscallResult {
+/// Wake up tasks waiting on a futex variable
+///
+/// Details: <https://manpages.debian.org/unstable/manpages-dev/futex.2.en.html#FUTEX_WAKE>
+///
+/// Tips: There is no need to check the bitset, faster than futex_wake_bitset
+pub fn futex_wake(vaddr: VirtAddr, flags: FutexFlags, nr_waken: u32) -> AxSyscallResult {
     info!(
         "[futex_wake] vaddr: {:?}, flags: {:?}, nr_waken: {:?}",
         vaddr, flags, nr_waken
     );
     let mut ret = 0;
-    let key = get_futex_key(vaddr, flags);
+    let key = get_futex_key(vaddr, &flags);
     let mut hash_bucket = FUTEXQUEUES.buckets[futex_hash(&key)].lock();
 
     if hash_bucket.is_empty() {
@@ -167,9 +170,10 @@ pub fn futex_wake(vaddr: VirtAddr, flags: i32, nr_waken: u32) -> AxSyscallResult
     Ok(ret as isize)
 }
 
+/// Wake up tasks specified by a bitset waiting on a futex variable
 pub fn futex_wake_bitset(
     vaddr: VirtAddr,
-    flags: i32,
+    flags: FutexFlags,
     nr_waken: u32,
     bitset: u32,
 ) -> AxSyscallResult {
@@ -181,7 +185,7 @@ pub fn futex_wake_bitset(
         return Err(LinuxError::EINVAL);
     }
     let mut ret = 0;
-    let key = get_futex_key(vaddr, flags);
+    let key = get_futex_key(vaddr, &flags);
     let mut hash_bucket = FUTEXQUEUES.buckets[futex_hash(&key)].lock();
     if hash_bucket.is_empty() {
         return Ok(0);
@@ -195,7 +199,7 @@ pub fn futex_wake_bitset(
                 ret += 1;
                 return false;
             }
-            return true;
+            true
         })
     }
     // drop hash_bucket to avoid deadlock
@@ -203,17 +207,18 @@ pub fn futex_wake_bitset(
     Ok(ret as isize)
 }
 
+/// Requeue tasks waiting on a futex variable
 pub fn futex_requeue(
     uaddr: VirtAddr,
-    flags: i32,
+    flags: FutexFlags,
     nr_waken: u32,
     uaddr2: VirtAddr,
     nr_requeue: u32,
 ) -> AxSyscallResult {
     let mut ret = 0;
     let mut requeued = 0;
-    let key = get_futex_key(uaddr, flags);
-    let req_key = get_futex_key(uaddr2, flags);
+    let key = get_futex_key(uaddr, &flags);
+    let req_key = get_futex_key(uaddr2, &flags);
 
     if key == req_key {
         return futex_wake(uaddr, flags, nr_waken);

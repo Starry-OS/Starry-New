@@ -19,18 +19,18 @@ default = ["monolithic"]
 [dependencies]
 cfg-if = "1.0"
 spinlock = { git = "https://github.com/Starry-OS/spinlock.git" }
-axtask = { git = "https://github.com/Starry-OS/axtask.git" }
-axsync = { git = "https://github.com/Starry-OS/axsync.git" }
-axmem = { git = "https://github.com/Starry-OS/axmem.git" }
-axalloc = { git = "https://github.com/Starry-OS/axalloc.git" }
+axtask = { path = "../axtask" }
+axsync = { path = "../axsync" }
+axmem = { path = "../axmem" }
+axalloc = { path = "../axalloc" }
 axio = { git = "https://github.com/Starry-OS/axio.git", features = ["alloc"] }
-axhal = { git = "https://github.com/Starry-OS/axhal.git" }
+axhal = { path = "../axhal" }
 axlog = { git = "https://github.com/Starry-OS/axlog.git" }
 axerrno = { git = "https://github.com/Starry-OS/axerrno.git" }
-axconfig = { git = "https://github.com/Starry-OS/axconfig.git" }
-axfs = { git = "https://github.com/Starry-OS/axfs.git", optional = true }
-axsignal = { git = "https://github.com/Starry-OS/axsignal.git" }
-axfutex = { git = "https://github.com/Starry-OS/axfutex.git" }
+axconfig = { path = "../axconfig" }
+axfs = { path = "../axfs", optional = true }
+axsignal = { path = "../axsignal" }
+axfutex = { path = "../axfutex" }
 riscv = "0.10"
 bitflags = "2.0"
 lazy_static = { version = "1.4", features = ["spin_no_std"] }

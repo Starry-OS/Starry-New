@@ -41,7 +41,7 @@ fn aarch64_vfp_compile() {
 
     // 编译汇编文件，增加 target-feature 选项
     let status = Command::new("clang")
-        .args(&[
+        .args([
             "-c",
             asm_file.to_str().unwrap(),
             "-o",
@@ -57,7 +57,7 @@ fn aarch64_vfp_compile() {
     // 打包对象文件为静态库
     let lib_out_file = PathBuf::from(&out_dir).join("libvfp_setjmp.a");
     let status = Command::new("ar")
-        .args(&[
+        .args([
             "crus",
             lib_out_file.to_str().unwrap(),
             asm_out_file.to_str().unwrap(),

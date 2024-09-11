@@ -427,9 +427,7 @@ impl TcpSocketOption {
 // TODO: achieve the real implementation of Ipv6Option
 impl Ipv6Option {
     pub fn set(&self, socket: &Socket, opt: &[u8]) -> SyscallResult {
-        match self {
-            _ => Ok(0),
-        }
+        Ok(0)
     }
 }
 
@@ -856,8 +854,6 @@ pub unsafe fn socket_address_from(addr: *const u8, socket: &Socket) -> SocketAdd
             let addr = IpAddr::v4(a[0], a[1], a[2], a[3]);
             SocketAddr { addr, port }
         }
-        // TODO: support ipv6
-        // Domain::AF_INET6 => {}
     }
 }
 /// Only support INET (ipv4)

@@ -33,8 +33,8 @@ pub(crate) unsafe fn mp_boot_stack(sp: usize) -> *mut u8 {
 
         if sp >= stack_low && sp < stack_high {
             log::info!("get sp {:#x} in second boot_stack", sp);
-            return SECONDARY_BOOT_STACK[i].as_mut_ptr()
+            return SECONDARY_BOOT_STACK[i].as_mut_ptr();
         }
     }
-    return 0 as *mut u8;
+    core::ptr::null_mut::<u8>()
 }

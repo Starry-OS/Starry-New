@@ -54,11 +54,11 @@ select = ["arceos_posix_api/select"]
 epoll = ["arceos_posix_api/epoll"]
 
 [dependencies]
-axfeat = { git = "https://github.com/Starry-OS/axfeat.git" }
-arceos_posix_api = { git = "https://github.com/Starry-OS/arceos_posix_api.git" }
+axfeat = { path = "../../api/axfeat" }
+arceos_posix_api = { path = "../../api/arceos_posix_api" }
 axio = { git = "https://github.com/Starry-OS/axio.git" }
 axerrno = { git = "https://github.com/Starry-OS/axerrno.git" }
-arch_boot = { git = "https://github.com/Starry-OS/arch_boot.git" }
+arch_boot = { path = "../../modules/arch_boot" }
 
 [build-dependencies]
 bindgen ={ version = "0.69" }

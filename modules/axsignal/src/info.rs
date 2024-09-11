@@ -15,15 +15,16 @@ pub struct SigInfo {
     /// The code of the signal
     pub si_code: i32,
 
+    /// Padding
     #[allow(unused)]
     pub pad: u32,
-
+    /// The process ID of the sender
     pub pid: i32,
-
+    /// The real user ID of the sender
     pub uid: u32,
-
+    /// The value sent with the signal
     pub si_val_int: i32,
-
+    /// The value pointer of the signal
     pub si_val_ptr: usize,
 }
 

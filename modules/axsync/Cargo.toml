@@ -18,10 +18,10 @@ default = []
 [dependencies]
 cfg-if = "1.0"
 spinlock = { git = "https://github.com/Starry-OS/spinlock.git" }
-axtask = { git = "https://github.com/Starry-OS/axtask.git" }
-axhal = {git = "https://github.com/Starry-OS/axhal.git"}
+axtask = { path = "../axtask" }
+axhal = { path = "../axhal" }
 
 [dev-dependencies]
 rand = "0.8"
-axsync = { git = "https://github.com/Starry-OS/axsync.git", features = ["multitask"] }
-axtask = { git = "https://github.com/Starry-OS/axtask.git", features = ["test"] }
+axsync = { path = "../axsync", features = ["multitask"] }
+axtask = { path = "../axtask", features = ["test"] }

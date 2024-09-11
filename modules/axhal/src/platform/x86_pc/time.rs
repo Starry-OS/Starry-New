@@ -1,7 +1,7 @@
 use raw_cpuid::CpuId;
 
 #[cfg(feature = "irq")]
-const LAPIC_TICKS_PER_SEC: u64 = 1_000_000_00; // TODO: need to calibrate
+const LAPIC_TICKS_PER_SEC: u64 = 1_000_000_000; // TODO: need to calibrate
 
 #[cfg(feature = "irq")]
 static mut NANOS_TO_LAPIC_TICKS_RATIO: ratio::Ratio = ratio::Ratio::zero();

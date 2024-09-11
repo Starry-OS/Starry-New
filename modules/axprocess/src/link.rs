@@ -307,9 +307,7 @@ pub fn deal_with_path(
         }
         process
             .manual_alloc_for_lazy((path_addr as usize).into())
-            .map(|_| {
-                path = unsafe { raw_ptr_to_ref_str(path_addr) }.to_string().clone();
-            })?;
+            .map(|_| path.clone_from(&unsafe { raw_ptr_to_ref_str(path_addr) }.to_string()))?;
     }
 
     if path.is_empty() {

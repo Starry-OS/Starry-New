@@ -119,6 +119,7 @@ impl SigAction {
         }
     }
 
+    /// Whether the syscall should be restarted after the signal handler returns
     pub fn need_restart(&self) -> bool {
         self.sa_flags.contains(SigActionFlags::SA_RESTART)
     }

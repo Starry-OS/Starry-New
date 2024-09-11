@@ -665,7 +665,6 @@ pub fn syscall_socketpair(args: [usize; 6]) -> SyscallResult {
     Ok(0)
 }
 
-
 /// return sockerpair read write
 pub fn make_socketpair(socket_type: usize) -> (Arc<Socket>, Arc<Socket>) {
     let s_type = SocketType::try_from(socket_type & SOCKET_TYPE_MASK).unwrap();

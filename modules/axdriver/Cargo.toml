@@ -35,7 +35,7 @@ img = ["ramdisk", "dep:axconfig"]
 default = ["bus-pci"]
 
 [dependencies]
-log = "0.4"
+log = "0.4.21"
 cfg-if = "1.0"
 driver_common = { git = "https://github.com/Starry-OS/driver_common.git" }
 driver_block = { git = "https://github.com/Starry-OS/driver_block.git", optional = true }
@@ -43,6 +43,6 @@ driver_net = { git = "https://github.com/Starry-OS/driver_net.git", optional = t
 driver_display = { git = "https://github.com/Starry-OS/driver_display.git", optional = true }
 driver_pci = { git = "https://github.com/Starry-OS/driver_pci.git", optional = true }
 driver_virtio = { git = "https://github.com/Starry-OS/driver_virtio.git", optional = true }
-axalloc = { git = "https://github.com/Starry-OS/axalloc.git", optional = true }
-axhal = { git = "https://github.com/Starry-OS/axhal.git", optional = true }
-axconfig = { git = "https://github.com/Starry-OS/axconfig.git", optional = true }
+axalloc = { path = "../axalloc", optional = true }
+axhal = { path = "../axhal", optional = true }
+axconfig = { path =  "../axconfig", optional = true }

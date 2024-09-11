@@ -31,11 +31,11 @@ monolithic = ["multitask", "axhal/monolithic", "taskctx/monolithic"]
 
 [dependencies]
 cfg-if = "1.0"
-log = "0.4"
+log = "0.4.21"
 numeric-enum-macro = { git = "https://github.com/mexus/numeric-enum-macro" }
-axhal = { git = "https://github.com/Starry-OS/axhal.git" }
-axsignal = { git = "https://github.com/Starry-OS/axsignal.git" }
-axconfig = { git = "https://github.com/Starry-OS/axconfig.git"}
+axhal = { path = "../axhal" }
+axsignal = { path = "../axsignal" }
+axconfig = { path =  "../axconfig" }
 percpu = { git = "https://github.com/Starry-OS/percpu.git", optional = true }
 spinlock = { git = "https://github.com/Starry-OS/spinlock.git", optional = true }
 lazy_init = { git = "https://github.com/Starry-OS/lazy_init.git", optional = true }
@@ -50,5 +50,5 @@ axbacktrace = { git = "https://github.com/kern-crates/axbacktrace.git" }
 
 [dev-dependencies]
 rand = "0.8"
-axhal = { git = "https://github.com/Starry-OS/axhal.git", features = ["fp_simd"] }
-axtask = { git = "https://github.com/Starry-OS/axtask.git", features = ["test"] }
+axhal = { path = "../axhal", features = ["fp_simd"] }
+axtask = { path = "../axtask", features = ["test"] }

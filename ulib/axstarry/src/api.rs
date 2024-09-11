@@ -33,7 +33,7 @@ pub fn get_envs() -> Vec<String> {
 ///
 /// The environment variables are hard coded, we need to read the file "/etc/environment" to get the environment variables
 pub fn run_testcase(testcase: &str) {
-    linux_syscall_api::run_testcase(testcase, get_envs());
+    let _ = linux_syscall_api::run_testcase(testcase, get_envs());
 }
 
 /// To print a string to the console

@@ -56,6 +56,7 @@ pub(crate) fn yield_current() {
     schedule();
 }
 
+/// Sleep the current task until the deadline.
 #[cfg(feature = "irq")]
 pub fn schedule_timeout(deadline: axhal::time::TimeValue) -> bool {
     let curr = crate::current();
@@ -69,6 +70,7 @@ pub fn schedule_timeout(deadline: axhal::time::TimeValue) -> bool {
     timeout
 }
 
+/// Check whether the current task should be preempted.
 #[cfg(feature = "irq")]
 pub fn scheduler_timer_tick() {
     let curr = crate::current();
@@ -78,10 +80,12 @@ pub fn scheduler_timer_tick() {
     }
 }
 
+/// Set the sched priority of the current task.
 pub fn set_current_priority(prio: isize) -> bool {
     current_processor().set_priority(crate::current().as_task_ref(), prio)
 }
 
+/// Wake up the given task from the blocking state.
 pub fn wakeup_task(task: AxTaskRef) {
     let mut state = task.state_lock_manual();
     match **state {
@@ -95,12 +99,12 @@ pub fn wakeup_task(task: AxTaskRef) {
             Processor::add_task(task.clone());
             return;
         }
-        _ => panic!("try to wakeup {:?} unexpect state {:?}",
-            task.id(), **state),
+        _ => panic!("try to wakeup {:?} unexpect state {:?}", task.id(), **state),
     }
     ManuallyDrop::into_inner(state);
 }
 
+/// Schedule the next task to run.
 pub fn schedule() {
     let next_task = current_processor().pick_next_task();
     switch_to(next_task);
@@ -117,7 +121,6 @@ fn switch_to(mut next_task: AxTaskRef) {
         prev_task.id_name()
     );
 
-
     // When the prev_task state_lock is locked, it records the irq configuration of
     // the prev_task at that time, after swich(in switch_post) it would be unlocked,
     // and restore the irq configuration to the lock_state store(NOTE: it own the prev_task).
@@ -129,34 +132,26 @@ fn switch_to(mut next_task: AxTaskRef) {
     // Here must lock curr state, and no one can change curr state
     // when excuting ctx_switch
     let mut prev_state_lock = prev_task.state_lock_manual();
-    
-    loop {
-        match **prev_state_lock {
-            TaskState::Runable => {
-                if next_task.is_idle() {
-                    next_task = prev_task.clone();
-                    break;
-                }
-                if !prev_task.is_idle() {
-                    #[cfg(feature = "preempt")]
-                    current_processor()
-                        .put_prev_task(prev_task.clone(), prev_task.get_preempt_pending());
-                    #[cfg(not(feature = "preempt"))]
-                    current_processor().put_prev_task(prev_task.clone(), false);
-                }
-                break;
+
+    match **prev_state_lock {
+        TaskState::Runable => {
+            if next_task.is_idle() {
+                next_task = prev_task.clone();
+            } else if !prev_task.is_idle() {
+                #[cfg(feature = "preempt")]
+                current_processor()
+                    .put_prev_task(prev_task.clone(), prev_task.get_preempt_pending());
+                #[cfg(not(feature = "preempt"))]
+                current_processor().put_prev_task(prev_task.clone(), false);
             }
-            TaskState::Blocking => {
-                debug!("task block: {}", prev_task.id_name());
-                **prev_state_lock = TaskState::Blocked;
-                break;
-            }
-            TaskState::Exited => {
-                break;
-            }
-            _ => {
-                panic!("unexpect state when switch_to happend ");
-            }
+        }
+        TaskState::Blocking => {
+            debug!("task block: {}", prev_task.id_name());
+            **prev_state_lock = TaskState::Blocked;
+        }
+        TaskState::Exited => {}
+        _ => {
+            panic!("unexpect state when switch_to happend ");
         }
     }
 
@@ -216,6 +211,5 @@ fn switch_to(mut next_task: AxTaskRef) {
         axhal::arch::task_context_switch(&mut (*prev_ctx_ptr), &(*next_ctx_ptr));
 
         current_processor().switch_post();
-
     }
 }

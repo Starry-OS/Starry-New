@@ -17,17 +17,17 @@ default = []
 
 [dependencies]
 cfg-if = "1.0"
-log = "0.4"
-linux_syscall_api = { git = "https://github.com/Starry-OS/linux_syscall_api.git", optional = true }
-axhal = { git = "https://github.com/Starry-OS/axhal.git" }
-axtrap = { git = "https://github.com/Starry-OS/axtrap.git" }
-axruntime = { git = "https://github.com/Starry-OS/axruntime.git" }
-axconfig = { git = "https://github.com/Starry-OS/axconfig.git" }
-axalloc = { git = "https://github.com/Starry-OS/axalloc.git", optional = true }
+log = "0.4.21"
+linux_syscall_api = { path = "../../api/linux_syscall_api", optional = true }
+axhal = { path = "../axhal" }
+axtrap = { path = "../axtrap" }
+axruntime = { path = "../axruntime" }
+axconfig = { path = "../axconfig" }
+axalloc = { path = "../axalloc", optional = true }
 axlog = { git = "https://github.com/Starry-OS/axlog.git" }
 
 [build-dependencies]
-axconfig = { git = "https://github.com/Starry-OS/axconfig.git" }
+axconfig = { path = "../axconfig" }
 
 [target.'cfg(target_arch = "x86_64")'.dependencies]
 x86 = "0.52"

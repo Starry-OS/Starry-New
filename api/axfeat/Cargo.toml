@@ -71,16 +71,16 @@ log-level-debug = ["axlog/log-level-debug"]
 log-level-trace = ["axlog/log-level-trace"]
 
 [dependencies]
-axruntime = { git = "https://github.com/Starry-OS/axruntime.git" }
-axhal = { git = "https://github.com/Starry-OS/axhal.git" }
+axruntime = { path = "../../modules/axruntime" }
+axhal = { path = "../../modules/axhal" }
 axlog = { git = "https://github.com/Starry-OS/axlog.git" }
-axalloc = { git = "https://github.com/Starry-OS/axalloc.git", optional = true }
-axdriver = { git = "https://github.com/Starry-OS/axdriver.git", optional = true }
-axfs = { git = "https://github.com/Starry-OS/axfs.git", optional = true }
-axnet = { git = "https://github.com/Starry-OS/axnet.git", optional = true }
-axdisplay = { git = "https://github.com/Starry-OS/axdisplay.git", optional = true }
-axsync = { git = "https://github.com/Starry-OS/axsync.git", optional = true }
-axtask = { git = "https://github.com/Starry-OS/axtask.git", optional = true }
-axprocess = { git = "https://github.com/Starry-OS/axprocess.git", optional = true }
+axalloc = { path = "../../modules/axalloc", optional = true }
+axdriver = { path = "../../modules/axdriver", optional = true }
+axfs = { path = "../../modules/axfs", optional = true }
+axnet = { path = "../../modules/axnet", optional = true }
+axdisplay = { path = "../../modules/axdisplay", optional = true }
+axsync = { path = "../../modules/axsync", optional = true }
+axtask = { path = "../../modules/axtask", optional = true }
+axprocess = { path = "../../modules/axprocess", optional = true }
 spinlock = { git = "https://github.com/Starry-OS/spinlock.git", optional = true }
 taskctx = { git = "https://github.com/Starry-OS/taskctx.git", optional = true }

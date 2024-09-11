@@ -58,22 +58,22 @@ impl SignalModule {
     /// - Some(true): The interrupted syscall should be restarted
     /// - Some(false): The interrupted syscall should not be restarted
     pub fn have_restart_signal(&self) -> Option<bool> {
-        match self.signal_set.find_signal() {
-            Some(sig_num) => Some(
-                self.signal_handler
-                    .lock()
-                    .get_action(sig_num)
-                    .need_restart(),
-            ),
-
-            None => None,
-        }
+        self.signal_set.find_signal().map(|sig_num| {
+            self.signal_handler
+                .lock()
+                .get_action(sig_num)
+                .need_restart()
+        })
     }
 
+    /// Set the exit signal of the process
+    ///
+    /// When the process exits, it will send the exit signal to the parent process
     pub fn set_exit_signal(&mut self, signal: SignalNo) {
         self.exit_signal = Some(signal);
     }
 
+    /// Get the exit signal of the process
     pub fn get_exit_signal(&self) -> Option<SignalNo> {
         self.exit_signal
     }

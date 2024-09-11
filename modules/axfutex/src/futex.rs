@@ -1,6 +1,6 @@
 use axtask::AxTaskRef;
 
-/// Kernel futex 
+/// Kernel futex
 pub struct FutexQ {
     /// The `val` of the futex
     /// the task in the queue waiting for the same futex may have different `val`
@@ -14,7 +14,7 @@ pub struct FutexQ {
 impl FutexQ {
     /// Create a new futex queue
     pub fn new(key: FutexKey, task: AxTaskRef, bitset: u32) -> Self {
-        Self { key, task, bitset}
+        Self { key, task, bitset }
     }
     /// check if the futex queues matches the key
     pub fn match_key(&self, key: &FutexKey) -> bool {
@@ -39,7 +39,12 @@ pub struct FutexKey {
 }
 
 impl FutexKey {
+    #[allow(missing_docs)]
     pub fn new(pid: u64, aligned: usize, offset: u32) -> Self {
-        Self { pid: pid as u32, aligned: aligned as u32, offset }
+        Self {
+            pid: pid as u32,
+            aligned: aligned as u32,
+            offset,
+        }
     }
 }

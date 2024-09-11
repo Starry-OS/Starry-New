@@ -16,6 +16,7 @@ mod mp;
 #[link_section = ".bss.stack"]
 pub(crate) static mut BOOT_STACK: [u8; TASK_STACK_SIZE] = [0; TASK_STACK_SIZE];
 
+/// Get the pointer to the boot stack of this core
 #[no_mangle]
 pub extern "C" fn current_boot_stack() -> *mut u8 {
     unsafe {
@@ -35,7 +36,7 @@ pub extern "C" fn current_boot_stack() -> *mut u8 {
 
         if sp >= stack_low && sp < stack_high {
             log::debug!("get sp {:#x} in boot_stack", sp);
-            return BOOT_STACK.as_mut_ptr()
+            return BOOT_STACK.as_mut_ptr();
         }
 
         #[cfg(feature = "smp")]
@@ -43,5 +44,4 @@ pub extern "C" fn current_boot_stack() -> *mut u8 {
         #[cfg(not(feature = "smp"))]
         return 0 as *mut u8;
     }
-
 }

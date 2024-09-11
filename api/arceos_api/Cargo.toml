@@ -26,15 +26,15 @@ myfs = ["axfeat/myfs"]
 dummy-if-not-enabled = []
 
 [dependencies]
-axfeat = { git = "https://github.com/Starry-OS/axfeat.git" }
-axruntime = { git = "https://github.com/Starry-OS/axruntime.git" }
-axconfig = { git = "https://github.com/Starry-OS/axconfig.git" }
+axfeat = { path = "../axfeat" }
+axruntime = { path = "../../modules/axruntime" }
+axconfig = { path = "../../modules/axconfig" }
 axlog = { git = "https://github.com/Starry-OS/axlog.git" }
 axio = { git = "https://github.com/Starry-OS/axio.git" }
 axerrno = { git = "https://github.com/Starry-OS/axerrno.git" }
-axhal = { git = "https://github.com/Starry-OS/axhal.git" }
-axalloc = { git = "https://github.com/Starry-OS/axalloc.git", optional = true }
-axtask = { git = "https://github.com/Starry-OS/axtask.git", optional = true }
-axfs = { git = "https://github.com/Starry-OS/axfs.git", optional = true }
-axnet = { git = "https://github.com/Starry-OS/axnet.git", optional = true }
-axdisplay = { git = "https://github.com/Starry-OS/axdisplay.git", optional = true }
+axhal = { path = "../../modules/axhal" }
+axalloc = { path = "../../modules/axalloc", optional = true }
+axtask = { path = "../../modules/axtask", optional = true }
+axfs = { path = "../../modules/axfs", optional = true }
+axnet = { path = "../../modules/axnet", optional = true }
+axdisplay = { path = "../../modules/axdisplay", optional = true }

@@ -14,14 +14,14 @@ monolithic = ["axfs/monolithic"]
 default = []
 
 [dependencies]
-log = "0.4"
-axhal = { git = "https://github.com/Starry-OS/axhal.git", features = ["paging"] }
-axalloc = { git = "https://github.com/Starry-OS/axalloc.git" }
-axconfig = { git = "https://github.com/Starry-OS/axconfig.git" }
+log = "0.4.21"
+axhal = { path = "../axhal", features = ["paging"] }
+axalloc = { path = "../axalloc" }
+axconfig = { path = "../axconfig" }
 axerrno = { git = "https://github.com/Starry-OS/axerrno.git" }
-axfs = { git = "https://github.com/Starry-OS/axfs.git" }
+axfs = { path = "../axfs" }
 axio = { git = "https://github.com/Starry-OS/axio.git" }
-axsync = { git = "https://github.com/Starry-OS/axsync.git" }
+axsync = { path = "../axsync" }
 spinlock = { git = "https://github.com/Starry-OS/spinlock.git" }
 xmas-elf = "0.9.0"
 riscv = "0.10"

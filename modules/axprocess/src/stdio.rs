@@ -56,8 +56,7 @@ fn stdin_read(buf: &mut [u8]) -> AxResult<usize> {
             buf.as_mut_ptr().write_volatile(ch);
         }
         Ok(1)
-    } 
-    else {
+    } else {
         // user appilcation
         let mut line = String::new();
         loop {
@@ -77,7 +76,6 @@ fn stdin_read(buf: &mut [u8]) -> AxResult<usize> {
                         }
                     }
                     _ => {
-                        // echo 
                         putchar(c);
                         line.push(c as char);
                     }

@@ -7,5 +7,50 @@ lto = true
 lto = true
 
 [workspace]
-members = ["apps/display", "apps/exception", "apps/helloworld", "apps/memtest", "apps/fs/shell", "apps/net/echoserver", "apps/net/httpclient", "apps/net/httpserver", "apps/net/udpserver", "apps/net/bwbench", "apps/task/parallel", "apps/task/sleep", "apps/task/yield", "apps/task/priority", "apps/task/tls", "apps/monolithic_userboot", "tools/axlibc"]
+
+members = [
+    "modules/axalloc",
+    "modules/axconfig",
+    "modules/axdisplay",
+    "modules/axdriver",
+    "modules/axfs",
+    "modules/axhal",
+    "modules/axmem",
+    "modules/axnet",
+    "modules/axruntime",
+    "modules/axsync",
+    "modules/axtask",
+	"modules/axprocess",
+	"modules/axtrap",
+	"modules/arch_boot",
+	"modules/axfutex",
+	"modules/axsignal",
+
+    "api/axfeat",
+    "api/arceos_api",
+    "api/arceos_posix_api",
+	"api/linux_syscall_api",
+
+    "ulib/axstd",
+    "ulib/axstarry",
+	"tools/axlibc",
+
+	"apps/display",
+	"apps/exception",
+	"apps/helloworld",
+	"apps/memtest",
+	"apps/fs/shell",
+	"apps/net/echoserver",
+	"apps/net/httpclient",
+	"apps/net/httpserver",
+	"apps/net/udpserver",
+	"apps/net/bwbench",
+	"apps/task/parallel",
+	"apps/task/sleep",
+	"apps/task/yield",
+	"apps/task/priority",
+	"apps/task/tls",
+	"apps/monolithic_userboot"
+]
+
 resolver = "2"
