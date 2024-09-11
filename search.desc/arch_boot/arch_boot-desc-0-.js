@@ -1,0 +1,1 @@
+searchState.loadedDescShard("arch_boot", 0, "The boot entry of the whole kernel, which will initialize …\nGet the pointer to the boot stack of this core")
