@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:Starry-OS/axtrap.git
+	branch = main
+	commit = f2529e64355db2c4df9561fd6603bf9eb9325cc4
+	parent = c328a63485f0bda40b5321458a00f51c3703f447
+	method = merge
+	cmdver = 0.4.9
