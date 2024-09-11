@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:Starry-OS/axalloc.git
+	branch = main
+	commit = da0de65d739b91fb422d33477d10cee473436c42
+	parent = 0e2888c0879b02e8806480860d9708526a0dda78
+	method = merge
+	cmdver = 0.4.9
