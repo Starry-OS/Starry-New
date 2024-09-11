@@ -1,0 +1,54 @@
+[package]
+name = "linux_syscall_api"
+version = "0.1.0"
+edition = "2021"
+authors = ["Youjie Zheng <zyj578335934@gmail.com>"]
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+keywords = ["Starry", "linux-syscall"]
+description = "A compatibility layer for linux syscalls on different operating systems written by Rust."
+
+
+
+[features]
+default = ["monolithic"]
+
+monolithic = ["axfeat/monolithic", "irq", "paging", "fs", "multitask", "net"]
+
+# Interrupts
+irq = ["axfeat/irq"]
+
+# Memory
+paging = ["axfeat/paging"]
+
+# Multi-threading and scheduler
+multitask = ["axfeat/multitask"]
+
+# Fs
+fs = ["axfeat/fs"]
+
+ip = ["axnet/ip"]
+net = ["ip", "axnet/monolithic"]
+
+[dependencies]
+cfg-if = "1.0"
+axlog = { git = "https://github.com/Starry-OS/axlog.git" }
+axfs = { git = "https://github.com/Starry-OS/axfs.git" }
+axruntime = { git = "https://github.com/Starry-OS/axruntime.git" }
+axhal = { git = "https://github.com/Starry-OS/axhal.git" }
+axtask = { git = "https://github.com/Starry-OS/axtask.git" }
+axnet = { git = "https://github.com/Starry-OS/axnet.git" }
+axprocess = { git = "https://github.com/Starry-OS/axprocess.git" }
+axsignal = { git = "https://github.com/Starry-OS/axsignal.git" }
+axconfig = { git = "https://github.com/Starry-OS/axconfig.git" }
+axsync = { git = "https://github.com/Starry-OS/axsync.git" }
+axmem = { git = "https://github.com/Starry-OS/axmem.git" }
+axfeat = { git = "https://github.com/Starry-OS/axfeat.git" }
+axfutex = { git = "https://github.com/Starry-OS/axfutex.git"}
+
+lazy_init = { git = "https://github.com/Starry-OS/lazy_init.git" }
+spinlock = { git = "https://github.com/Starry-OS/spinlock.git" }
+axerrno = { git = "https://github.com/Starry-OS/axerrno.git" }
+numeric-enum-macro = { git = "https://github.com/mexus/numeric-enum-macro" }
+bitflags = "2.6"
+rand = { version = "0.8.5", default-features = false, features = ["small_rng"] }
+num_enum = { version = "0.5.11", default-features = false }
