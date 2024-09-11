@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:Starry-OS/axdriver.git
+	branch = main
+	commit = 9a968311691d3439166d7d2719aa7b98964f57c6
+	parent = de2b11ebe84e6189d337d96a8a180de86c87df56
+	method = merge
+	cmdver = 0.4.9
