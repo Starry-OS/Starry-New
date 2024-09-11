@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:Starry-OS/axsync.git
+	branch = main
+	commit = 70651a7c8e918e6f6aced3014acfd16f209aa4c0
+	parent = 498dcc43a846eb163db1fa851c98e39d0a6b2e07
+	method = merge
+	cmdver = 0.4.9
