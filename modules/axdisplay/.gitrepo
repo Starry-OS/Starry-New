@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:Starry-OS/axdisplay.git
+	branch = main
+	commit = 803cda0fbfb5d3761d8d40d177fd6e19a8eba21f
+	parent = d9a6cf127dc1d7017c2842717ab873ca13678417
+	method = merge
+	cmdver = 0.4.9
