@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:Starry-OS/axsignal.git
+	branch = main
+	commit = 1cc27325ed3ce8477d10ed0c22af027ce85ca6d3
+	parent = f60bd45af40628666cd4ae6de54222ba5a7ed730
+	method = merge
+	cmdver = 0.4.9
