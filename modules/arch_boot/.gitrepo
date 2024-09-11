@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:Starry-OS/arch_boot.git
+	branch = main
+	commit = 03cb86283f3bbc3d85c88e37dfc561fe80d24210
+	parent = 13d0ba5ef4719aa4dc1f38535612d524ef2251d9
+	method = merge
+	cmdver = 0.4.9
